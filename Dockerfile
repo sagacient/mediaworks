@@ -41,7 +41,9 @@ RUN pip3 install --no-cache-dir --break-system-packages \
     'Pillow>=11.0.0'
 
 # Create non-root user for security
-RUN useradd -m -s /bin/bash -u 1000 mediaworks
+# Remove default ubuntu user (UID 1000) if it exists, then create mediaworks
+RUN userdel -r ubuntu 2>/dev/null || true && \
+    useradd -m -s /bin/bash -u 1000 mediaworks
 
 # Create directories
 RUN mkdir -p /data /output /scripts && \
